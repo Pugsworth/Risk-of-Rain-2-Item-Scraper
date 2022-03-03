@@ -1,0 +1,33 @@
+var itemTable = document.querySelector("#content .mw-parser-output table")
+
+/*
+URL: https://riskofrain2.fandom.com/wiki/Items
+
+Iterate each <tr>
+    Iterate each <td>
+        Get properties of each item
+            title = (span > a).title
+            wikiPage = (span > a).href
+            bgImage = (span > a > img).src
+            fgImage = (span > span > img).src
+        Get biggest images available
+            Transform bgImage url
+                from: https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/5/54/BgCommon.png/revision/latest/scale-to-width-down/32?cb=20200415011527
+                to: https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/5/54/BgCommon.png/revision/latest
+            Transform fgImage url
+                from: https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/f/f2/Soldier%27s_Syringe.png/revision/latest/scale-to-width-down/30?cb=20210329065946
+                to: https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/f/f2/Soldier%27s_Syringe.png/revision/latest
+        Add wikiPage to queue for crawling
+
+Crawl each wiki page to fetch data (is available on the same page, but I'll just do it the hard way I guess)
+    info box selector = "table.infoboxtable"
+    name = (tr:first-child).textContent
+    description = (.infoboxdesc).textContent
+    rarity = (tr:nth-child(5)>td>a).textContent
+    category = (tr:nth-child(6)>td>a).textContent
+    stackability = (tr:last-child>td:nth-child(3)).textContent
+
+
+
+*/
+
