@@ -4,11 +4,15 @@
   "description": "Scrap item data from the riskofrain2 fandom wiki",
   "main": "index.js",
   "scripts": {
+    "scrape-data": "node scrape-data.js",
+    "download-images": "node download-images.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kyle",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "puppeteer": "^13.4.1"
+    "axios": "^0.26.0",
+    "puppeteer": "^13.4.1",
+    "sharp": "^0.30.2"
   }
 }
