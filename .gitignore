@@ -1,3 +1,7 @@
 /cached-pages
 /images/screenshots
 /node_modules
+/images/icons/bg/*.png
+/images/icons/bg/*.jpg
+/images/icons/fg/*.png
+/images/icons/fg/*.jpg
