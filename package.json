@@ -1,24 +1,26 @@
 {
-  "name": "items-scraper",
-  "version": "0.0.1",
-  "description": "Scrap item data from the riskofrain2 fandom wiki",
-  "main": "build/index.js",
-  "scripts": {
-    "scrape-data": "npx tsc && node build/scrape-data.js",
-    "download-images": "npx tsc && node build/download-images.js",
-    "test": "mocha"
-  },
-  "author": "Kyle",
-  "license": "GPL-3.0-or-later",
-  "dependencies": {
-    "axios": "^0.26.0",
-    "puppeteer": "^13.4.1",
-    "queue-typescript": "^1.0.1",
-    "sharp": "^0.30.2"
-  },
-  "devDependencies": {
-    "@types/sharp": "^0.29.5",
-    "mocha": "^9.2.1",
-    "typescript": "^4.6.2"
-  }
+    "name": "items-scraper",
+    "version": "0.0.1",
+    "description": "Scrap item data from the riskofrain2 fandom wiki",
+    "main": "build/index.js",
+    "scripts": {
+        "build": "npx tsc --build",
+        "clean": "npx tsc --build --clean",
+        "scrape-data": "node build/scrape-data.js",
+        "download-images": "node build/download-images.js",
+        "test": "mocha"
+    },
+    "author": "Kyle",
+    "license": "GPL-3.0-or-later",
+    "dependencies": {
+        "axios": "^0.26.0",
+        "puppeteer": "^13.4.1",
+        "queue-typescript": "^1.0.1",
+        "sharp": "^0.30.2"
+    },
+    "devDependencies": {
+        "@types/sharp": "^0.29.5",
+        "mocha": "^9.2.1",
+        "typescript": "^4.6.2"
+    }
 }
