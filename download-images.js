@@ -2,36 +2,33 @@ const fs = require("node:fs");
 const Sharp = require("sharp");
 const Axios = require("axios");
 const Path = require("path");
+const { Filename, UrlFilename } = require("./Filename");
 
-
-const FILENAME_REGEX = /[^\/]*\.(png|jpg)/i;
 
 let bgImageDownloaded = {};
 
 async function DownloadBgImage(_url)
 {
     // extract filename from url
-    let url = new URL(_url);
-    let match = url.pathname.match(FILENAME_REGEX);
-    let filename = Filename(match[0]);
+    let urlFn = new UrlFilename(_url);
 
     // Check to see if we have already downloaded this image
-    if (bgImageDownloaded[filename.name]) {
-        console.log(`Already downloaded ${filename.name}... skipping`);
+    if (bgImageDownloaded[urlFn.filename.name]) {
+        console.log(`Already downloaded ${urlFn.filename.name}... skipping`);
         return;
     }
 
     // this background image has already been downloaded
-    bgImageDownloaded[filename.name] = true;
+    bgImageDownloaded[urlFn.filename.name] = true;
 
-    console.log(`Downloading ${filename.full}`);
+    console.log(`Downloading ${urlFn.filename.filename}`);
 
     try {
-        await DownloadImage(_url, Path.join("./images/icons/bg", filename.full));
+        await DownloadImage(_url, Path.join("./images/icons/bg", urlFn.filename.filename));
         return true;
     }
     catch (ex) {
-        console.log(`Error downloading ${filename.full}: ${ex}`);
+        console.log(`Error downloading ${urlFn.filename.filename}: ${ex}`);
     }
 
     return false;
@@ -40,13 +37,11 @@ async function DownloadBgImage(_url)
 async function DownloadFgImage(_url)
 {
     // extract filename from url
-    let url = new URL(_url);
-    let match = url.pathname.match(FILENAME_REGEX);
-    let filename = Filename(match[0]);
+    let urlFn = new UrlFilename(_url);
 
-    console.log(`Downloading ${filename.full}`);
+    console.log(`Downloading ${urlFn.filename.filename}`);
 
-    let full_filename = Path.join("./images/icons/fg", filename.full)
+    let full_filename = Path.join("./images/icons/fg", urlFn.filename.filename)
 
     // Check to see if the file exists
     if (fs.existsSync(full_filename)) {
@@ -58,7 +53,7 @@ async function DownloadFgImage(_url)
         return true;
     }
     catch (ex) {
-        console.log(`Error downloading ${filename.full}: ${ex}`);
+        console.log(`Error downloading ${urlFn.filename.filename}: ${ex}`);
     }
 
     return false;
@@ -79,24 +74,6 @@ async function DownloadImage(src, filepath)
     });
 }
 
-// Turns a filename "filename.ext" into an object:
-/*
-{
-    name: "filename",
-    ext: "ext",
-    full: "filename.ext"
-}
-*/
-function Filename(str)
-{
-    let s = str.split('.');
-    return {
-        name: s[0],
-        ext: s[1],
-        full: str
-    }
-}
-
 // Main
 (async () => {
     let itemsTxt = fs.readFileSync("./data/items.json");
@@ -111,6 +88,9 @@ function Filename(str)
         let bgImageUrl = item["bgImage"];
         let fgImageUrl = item["fgImage"];
 
+        let fgUrlFn = new UrlFilename(fgImageUrl);
+        let bgUrlFn = new UrlFilename(bgImageUrl);
+
         // Download background and foreground concurrently, but don't move on to the next set until done
         await Promise.all([
             // Download Background
@@ -119,6 +99,36 @@ function Filename(str)
             DownloadFgImage(fgImageUrl)
         ])
         .catch(() => hasErrored = true);
+
+        // Create the main buffer
+        var buffer = Sharp({
+            create: {
+                width: 128,
+                height: 128,
+                channels: 3,
+                background: { r: 0, g: 0, b: 0 }
+            }
+        })
+
+        // load and resize background
+        var bgBuffer = await Sharp(Path.join("images/icons/bg", bgUrlFn.filename.filename))
+            .resize(128, 128)
+            .toBuffer();
+
+        // load and resize foreground
+        var fgBuffer = await Sharp(Path.join("images/icons/fg", fgUrlFn.filename.filename))
+            .resize(128, 128)
+            .toBuffer();
+
+        // composite foreground onto background
+        buffer
+        .composite([
+            {input: bgBuffer},
+            {input: fgBuffer}
+        ])
+        .toFile(
+            Path.join("images/icons/all", fgUrlFn.filename.filename)
+        );
 
         // newline after downloads finished
         console.log();
