@@ -6,30 +6,8 @@ const ScrapeSingleItemPage = require("./single-item-client");
 const ProgressBar = require("./progressbar");
 
 (async () => {
-    const browser = await puppet.launch({
-        headless: true,
-        devtools: false
-    });
-    const page = await browser.newPage();
-
-    await page.setRequestInterception(true);
-    // Don't load pointless javascript
-    page.on("request", request => {
-        if (request.resourceType() == "script") {
-            request.abort();
-        } else {
-            request.continue();
-        }
-    });
-    // console redirection
-    page.on("console", message => {
-        return;
-        if (/error|log/.test(message.type())) { // message.type() in [list of value]
-            console.log("[Puppeteer] " + message.text());
-        }
-    });
+    const page = await BuildBrowser();
     await page.goto("https://riskofrain2.fandom.com/wiki/Items", { timeout: 0 });
-    // await page.screenshot({ path: "./images/screenshots/test.png" })
 
     // await page.goto("file:///C:/Users/Kyle/Desktop/Projects/nodejs/RiskofRain2-Item-Webpage/src/utility/items-scraper/cached-pages/Items - Risk of Rain 2 Wiki.html");
 
@@ -106,3 +84,36 @@ const ProgressBar = require("./progressbar");
 
     await browser.close();
 })();
+
+async function BuildBrowser()
+{
+    const browser = await puppet.launch({
+        headless: true,
+        devtools: false
+    });
+    const page = await browser.newPage();
+
+    await page.setRequestInterception(true);
+
+    // Don't load pointless javascript
+    page.on("request", request =>
+    {
+        if (request.resourceType() == "script") {
+            request.abort();
+        } else {
+            request.continue();
+        }
+    });
+
+    // console redirection
+    page.on("console", message =>
+    {
+        return;
+        if (/error|log/.test(message.type())) { // message.type() in [list of value]
+            console.log("[Puppeteer] " + message.text());
+        }
+    });
+
+    return page;
+}
+
