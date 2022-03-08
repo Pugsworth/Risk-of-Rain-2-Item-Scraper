@@ -1,5 +1,6 @@
 // This code is ran from within the page via puppeteer
 // It has no access to node
+
 function ScrapeAllItemsPage()
 {
     var itemsList = []
