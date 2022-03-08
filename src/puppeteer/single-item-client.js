@@ -9,7 +9,7 @@ function ScrapeSingleItemPage()
             description: description,
             rarity: rarity,
             category: category,
-            stack: stack
+            stackability: stack
         };
     }
 

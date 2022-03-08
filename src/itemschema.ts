@@ -1,5 +1,6 @@
 // Item Schema after data is scraped
 // The Items Schema should be:
+/*
 [
     {
         "name": "String",
@@ -29,3 +30,25 @@
     },
     ...
 ]
+*/
+
+import { Filename, UrlFilename } from "./Filename"
+
+export interface ItemMetadata {
+    wikiPage: URL,
+    bgImage: UrlFilename,
+    fgImage: UrlFilename
+};
+
+export interface ItemData {
+    description: string,
+    rarity: string,
+    category: string,
+    stackability: string
+};
+
+export interface ItemSchema {
+    name: string,
+    metadata: ItemMetadata,
+    data: ItemData
+}

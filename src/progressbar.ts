@@ -1,6 +1,6 @@
 const EPISILON = 0.01;
 
-function ProgressBar(prefix, frac, charToUse, totalColumns, showPercent = false)
+export default function ProgressBar(prefix: string, frac: number, charToUse: string, totalColumns: number, showPercent: boolean = false): string
 {
     var cols = Math.floor(totalColumns * frac);
     let remainingCols = totalColumns - cols;
@@ -19,7 +19,3 @@ function ProgressBar(prefix, frac, charToUse, totalColumns, showPercent = false)
 
     return `${prefix} [${bar}${empty}]${extra}`;
 }
-
-
-
-module.exports = ProgressBar;

@@ -8,17 +8,22 @@ Purpose: Prepare a url for download and file manipulation
 */
 const FILENAME_REGEX = /[^\/]*\.(png|jpg)/i;
 
-class UrlFilename
+export class UrlFilename
 {
-    url = "";
-    filename = "";
+    url: string;
+    filename: Filename;
 
-    constructor(_urlStr)
+    constructor(_urlStr: string)
     {
         let url = new URL(_urlStr);
         let match = url.pathname.match(FILENAME_REGEX);
 
-        let extracted_filename = match[0];
+        if (match == null) {
+            // TODO: Do something about the null match
+            throw "Match is null";
+        }
+
+        let extracted_filename = match![0];
 
         this.url = _urlStr;
         this.filename = new Filename(extracted_filename);
@@ -34,14 +39,14 @@ class UrlFilename
 }
 Purpose: Turn a filename into the components
 */
-class Filename
+export class Filename
 {
-    name = "";
-    ext = "";
-    filename = "";
+    name: string;
+    ext: string;
+    filename: string;
 
     // _fn = filename = "filename.ext"
-    constructor(_fn)
+    constructor(_fn: string)
     {
         let s = _fn.split('.');
 
@@ -55,6 +60,3 @@ class Filename
         return this.filename;
     }
 }
-
-exports.UrlFilename = UrlFilename;
-exports.Filename = Filename;

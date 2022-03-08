@@ -1,13 +1,14 @@
-const fs = require("node:fs");
-const Sharp = require("sharp");
-const Axios = require("axios");
-const Path = require("path");
-const { Filename, UrlFilename } = require("./Filename");
+import fs from "node:fs";
+import Path from "node:path";
+import Sharp from "sharp";
+import Axios from "axios";
 
+import { Filename, UrlFilename } from "./Filename";
 
-let bgImageDownloaded = {};
+// Simple string => boolean map to track which background images have already been downloaded
+let bgImageDownloaded: { [index:string]: boolean } = {};
 
-async function DownloadBgImage(_url)
+async function DownloadBgImage(_url: string)
 {
     // extract filename from url
     let urlFn = new UrlFilename(_url);
@@ -34,7 +35,7 @@ async function DownloadBgImage(_url)
     return false;
 }
 
-async function DownloadFgImage(_url)
+async function DownloadFgImage(_url: string)
 {
     // extract filename from url
     let urlFn = new UrlFilename(_url);
@@ -59,7 +60,7 @@ async function DownloadFgImage(_url)
     return false;
 }
 
-async function DownloadImage(src, filepath)
+async function DownloadImage(src: string, filepath: string)
 {
     const response = await Axios({
         url: src,
@@ -76,11 +77,7 @@ async function DownloadImage(src, filepath)
 
 // Main
 (async () => {
-    let itemsTxt = fs.readFileSync("./data/items.json");
-    let itemsData = JSON.parse(itemsTxt);
-
-    // let allItemsTxt = fs.readFileSync("./data/allitemsdata.json");
-    // let allItemsData = JSON.parse(allItemsTxt);
+    let itemsData = require("./data/items.json");
 
     var hasErrored = false;
 
@@ -116,7 +113,7 @@ async function DownloadImage(src, filepath)
     }
 })();
 
-async function CompositeImages(bgUrlFn, fgUrlFn)
+async function CompositeImages(bgUrlFn: UrlFilename, fgUrlFn: UrlFilename)
 {
     // Create the main buffer
     var buffer = Sharp({
