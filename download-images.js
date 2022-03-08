@@ -14,7 +14,7 @@ async function DownloadBgImage(_url)
 
     // Check to see if we have already downloaded this image
     if (bgImageDownloaded[urlFn.filename.name]) {
-        console.log(`Already downloaded ${urlFn.filename.name}... skipping`);
+        console.log(`Already downloaded ${urlFn.filename.name}, skipping...`);
         return;
     }
 
@@ -88,9 +88,6 @@ async function DownloadImage(src, filepath)
         let bgImageUrl = item["bgImage"];
         let fgImageUrl = item["fgImage"];
 
-        let fgUrlFn = new UrlFilename(fgImageUrl);
-        let bgUrlFn = new UrlFilename(bgImageUrl);
-
         // Download background and foreground concurrently, but don't move on to the next set until done
         await Promise.all([
             // Download Background
@@ -100,35 +97,13 @@ async function DownloadImage(src, filepath)
         ])
         .catch(() => hasErrored = true);
 
-        // Create the main buffer
-        var buffer = Sharp({
-            create: {
-                width: 128,
-                height: 128,
-                channels: 3,
-                background: { r: 0, g: 0, b: 0 }
-            }
-        })
 
-        // load and resize background
-        var bgBuffer = await Sharp(Path.join("images/icons/bg", bgUrlFn.filename.filename))
-            .resize(128, 128)
-            .toBuffer();
+        // Composite images together and save into the images/icons/all directory
+        let fgUrlFn = new UrlFilename(fgImageUrl);
+        let bgUrlFn = new UrlFilename(bgImageUrl);
 
-        // load and resize foreground
-        var fgBuffer = await Sharp(Path.join("images/icons/fg", fgUrlFn.filename.filename))
-            .resize(128, 128)
-            .toBuffer();
+        await CompositeImages(bgUrlFn, fgUrlFn);
 
-        // composite foreground onto background
-        buffer
-        .composite([
-            {input: bgBuffer},
-            {input: fgBuffer}
-        ])
-        .toFile(
-            Path.join("images/icons/all", fgUrlFn.filename.filename)
-        );
 
         // newline after downloads finished
         console.log();
@@ -140,3 +115,36 @@ async function DownloadImage(src, filepath)
         console.log("All images downloaded successfully!");
     }
 })();
+
+async function CompositeImages(bgUrlFn, fgUrlFn)
+{
+    // Create the main buffer
+    var buffer = Sharp({
+        create: {
+            width: 128,
+            height: 128,
+            channels: 3,
+            background: { r: 0, g: 0, b: 0 }
+        }
+    });
+
+    // load and resize background
+    var bgBuffer = await Sharp(Path.join("images/icons/bg", bgUrlFn.filename.filename))
+        .resize(128, 128)
+        .toBuffer();
+
+    // load and resize foreground
+    var fgBuffer = await Sharp(Path.join("images/icons/fg", fgUrlFn.filename.filename))
+        .resize(128, 128)
+        .toBuffer();
+
+    // composite foreground onto background
+    buffer
+        .composite([
+            { input: bgBuffer },
+            { input: fgBuffer }
+        ])
+        .toFile(
+            Path.join("images/icons/all", fgUrlFn.filename.filename)
+        );
+}
