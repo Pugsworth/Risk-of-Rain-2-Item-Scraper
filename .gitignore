@@ -1,5 +1,6 @@
 /cached-pages
 /images/screenshots
+/images/icons/**/*.png
 /node_modules
-/images/*
+!/**/*.gitkeep
 /build
