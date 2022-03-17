@@ -889,7 +889,7 @@
 			}
 		},
 		"data": {
-			"description": "On killing an enemy, spawn a lava pillar in a 12m (+2.4m per stack) radius for 260% (+156% per stack) base damage.",
+			"description": "On killing an enemy, spawn a lava pillar in a 12m (+2.4m per stack) radius for 350% (+280% per stack) base damage.",
 			"rarity": "Uncommon",
 			"category": "Damage",
 			"stackability": "Linear"
@@ -3160,7 +3160,7 @@
 			"description": "Upon death, this item will be consumed and you will return to life with 3 seconds of invulnerability, and all of your items that can be corrupted will be. Corrupts all Dio's Best Friends.",
 			"rarity": "Void",
 			"category": "Utility",
-			"stackability": "MISSING"
+			"stackability": "Linear"
 		}
 	},
 	{
@@ -3297,7 +3297,7 @@
 			}
 		},
 		"data": {
-			"description": "Upon hitting an enemy at full health, spawn a lava pillar in a 12m (+2.4m per stack) radius for 350% (+280% per stack) base damage. Corrupts all Will-o'-the-wisps.",
+			"description": "Upon hitting an enemy at full health, spawn a lava pillar in a 12m (+2.4m per stack) radius for 260% (+156% per stack) base damage. Corrupts all Will-o'-the-wisps.",
 			"rarity": "Void",
 			"category": "Damage",
 			"stackability": "Linear"
@@ -4165,7 +4165,7 @@
 			}
 		},
 		"data": {
-			"description": "Spawn a gummy clone that has 200% damage and 200% health. Expires in 30 seconds.",
+			"description": "Spawn a gummy clone that has 170% damage and 170% health. Expires in 30 seconds.",
 			"rarity": "Equipment",
 			"category": "MISSING",
 			"stackability": "MISSING"
@@ -4670,6 +4670,34 @@
 		},
 		"data": {
 			"description": "Become an aspect of fire.",
+			"rarity": "Elite Equipment",
+			"category": "MISSING",
+			"stackability": "MISSING"
+		}
+	},
+	{
+		"name": "His Reassurance",
+		"metadata": {
+			"wikiPage": "https://riskofrain2.fandom.com/wiki/His_Reassurance",
+			"bgImage": {
+				"url": "https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/2/2d/BgEquipment.png/revision/latest",
+				"filename": {
+					"name": "BgEquipment",
+					"ext": "png",
+					"filename": "BgEquipment.png"
+				}
+			},
+			"fgImage": {
+				"url": "https://static.wikia.nocookie.net/riskofrain2_gamepedia_en/images/5/5d/His_Reassurance.png/revision/latest",
+				"filename": {
+					"name": "His_Reassurance",
+					"ext": "png",
+					"filename": "His_Reassurance.png"
+				}
+			}
+		},
+		"data": {
+			"description": "Become an aspect of earth.",
 			"rarity": "Elite Equipment",
 			"category": "MISSING",
 			"stackability": "MISSING"
